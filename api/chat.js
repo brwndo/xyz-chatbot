@@ -24,13 +24,6 @@ CORE SKILLS
 - Figma, Webflow, Framer, design systems, Cursor/AI prototyping
 - Web3, marketplaces, creative tools, early-stage SaaS
 
-SKILLS:
-- Frontend: React, Vue.js, HTML5, CSS3, JavaScript/TypeScript
-- Backend: Node.js, Express, Python, RESTful APIs
-- Databases: PostgreSQL, MongoDB, Redis
-- Cloud: AWS, Vercel, Docker
-- Tools: Git, Webpack, Jest, CI/CD
-
 EXPERIENCE:
 Co-Founder & Lead Product Designer — op.xyz (2022–2025)
 - Web3 product studio focused on NFTs and digital collectibles

@@ -11,9 +11,16 @@
     },
     "api/embed.js": {
       "maxDuration": 10
+    },
+    "api/index.js": {
+      "maxDuration": 10
     }
   },
   "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/index"
+    },
     {
       "source": "/embed.html",
       "destination": "/api/embed"
