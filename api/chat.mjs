@@ -1,6 +1,7 @@
 // Serverless function for handling chat requests with OpenAI API
-const OpenAI = require('openai/index.mjs');
+import OpenAI from "openai";
 
+// Initialize OpenAI with environment variable
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -35,7 +36,7 @@ EXPERIENCE:
 Please answer questions about this developer's background, projects, and skills in a friendly and informative way. If asked about something not covered in this context, politely mention that you'd be happy to connect them directly with the developer for more specific information.
 `;
 
-async function handler(req, res) {
+export default async function handler(req, res) {
   // Handle CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -64,14 +65,8 @@ async function handler(req, res) {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        {
-          role: "system",
-          content: PORTFOLIO_CONTEXT
-        },
-        {
-          role: "user",
-          content: message
-        }
+        { role: "system", content: PORTFOLIO_CONTEXT },
+        { role: "user", content: message }
       ],
       max_tokens: 500,
       temperature: 0.7,
@@ -83,23 +78,15 @@ async function handler(req, res) {
 
   } catch (error) {
     console.error('OpenAI API error:', error);
-    
+
     if (error.code === 'insufficient_quota') {
-      return res.status(429).json({ 
-        error: 'API quota exceeded. Please try again later.' 
-      });
-    }
-    
-    if (error.code === 'invalid_api_key') {
-      return res.status(401).json({ 
-        error: 'Invalid API key configuration.' 
-      });
+      return res.status(429).json({ error: 'API quota exceeded. Please try again later.' });
     }
 
-    res.status(500).json({ 
-      error: 'Failed to process your request. Please try again.' 
-    });
+    if (error.code === 'invalid_api_key') {
+      return res.status(401).json({ error: 'Invalid API key configuration.' });
+    }
+
+    res.status(500).json({ error: 'Failed to process your request. Please try again.' });
   }
 }
-
-module.exports = { default: handler };
