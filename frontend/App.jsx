@@ -86,7 +86,6 @@ function App() {
             </div>
             <div className="profile-info">
               <h1>Brandon Arthur XYZ</h1>
-              <p>Portfolio Assistant</p>
             </div>
           </div>
           <button 
