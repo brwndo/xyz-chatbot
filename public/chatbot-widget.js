@@ -2,7 +2,7 @@
   'use strict';
   
   // Configuration
-  const CHATBOT_URL = 'https://your-app.vercel.app'; // Replace with your actual Vercel URL
+  const CHATBOT_URL = 'https://xyz-chatbot.vercel.app/'; // Replace with your actual Vercel URL
   
   // Widget class
   class ChatbotWidget {

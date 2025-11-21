@@ -8,7 +8,7 @@ The easiest way to embed your chatbot:
 
 ```html
 <iframe 
-  src="https://your-app.vercel.app/embed.html" 
+  src="https://xyz-chatbot.vercel.app/embed.html" 
   width="400" 
   height="600"
   frameborder="0"
@@ -20,7 +20,7 @@ The easiest way to embed your chatbot:
 ```html
 <div style="position: relative; width: 100%; height: 600px;">
   <iframe 
-    src="https://your-app.vercel.app/embed.html" 
+    src="https://xyz-chatbot.vercel.app/embed.html" 
     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
     title="Portfolio Chatbot">
   </iframe>
@@ -35,14 +35,14 @@ A floating chat widget that appears on any page:
 ```html
 <!-- Add this before closing </body> tag -->
 <script 
-  src="https://your-app.vercel.app/chatbot-widget.js" 
+  src="https://xyz-chatbot.vercel.app/chatbot-widget.js" 
   data-auto-init="true">
 </script>
 ```
 
 ### Advanced Configuration:
 ```html
-<script src="https://your-app.vercel.app/chatbot-widget.js"></script>
+<script src="https://xyz-chatbot.vercel.app/chatbot-widget.js"></script>
 <script>
   new ChatbotWidget({
     position: 'bottom-right',    // bottom-right, bottom-left, top-right, top-left
@@ -57,7 +57,7 @@ A floating chat widget that appears on any page:
 ### Data Attribute Configuration:
 ```html
 <script 
-  src="https://your-app.vercel.app/chatbot-widget.js" 
+  src="https://xyz-chatbot.vercel.app/chatbot-widget.js" 
   data-auto-init="true"
   data-position="bottom-left"
   data-button-color="#007bff">
@@ -70,7 +70,7 @@ For more control, you can integrate the chatbot API directly:
 
 ```javascript
 async function sendMessage(message) {
-  const response = await fetch('https://your-app.vercel.app/api/chat', {
+  const response = await fetch('https://xyz-chatbot.vercel.app/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ You can override the widget styles with CSS:
 Add to your theme's `footer.php` or use a custom HTML block:
 ```html
 <script 
-  src="https://your-app.vercel.app/chatbot-widget.js" 
+  src="https://xyz-chatbot.vercel.app/chatbot-widget.js" 
   data-auto-init="true">
 </script>
 ```
@@ -137,7 +137,7 @@ import { useEffect } from 'react';
 export default function MyPage() {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://your-app.vercel.app/chatbot-widget.js';
+    script.src = 'https://xyz-chatbot.vercel.app/chatbot-widget.js';
     script.onload = () => {
       new window.ChatbotWidget({
         position: 'bottom-right',
@@ -167,7 +167,7 @@ export default function MyPage() {
   
   <!-- Chatbot Widget -->
   <script 
-    src="https://your-app.vercel.app/chatbot-widget.js" 
+    src="https://xyz-chatbot.vercel.app/chatbot-widget.js" 
     data-auto-init="true"
     data-position="bottom-right">
   </script>
@@ -188,4 +188,4 @@ If you need help customizing the embed for your specific use case, feel free to 
 
 ---
 
-**Replace `https://your-app.vercel.app` with your actual Vercel deployment URL**
+**Replace `https://xyz-chatbot.vercel.app` with your actual Vercel deployment URL**
