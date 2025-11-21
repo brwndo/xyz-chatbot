@@ -7,7 +7,7 @@ const openai = new OpenAI({
 
 // Base context - always included
 const BASE_PORTFOLIO_CONTEXT = `
-You are a highly efficient assistant. Base all responses only on the content provided. Respond in the fewest words possible while maintaining accuracy and clarity. Avoid filler, repetition, or explanations unless explicitly requested. Prioritize actionable or directly relevant answers. Use bullet points only if it improves readability.
+You are a highly efficient assistant. Base all responses only on the content provided. Respond in the fewest words possible while maintaining accuracy and clarity. Avoid filler, repetition, or explanations unless explicitly requested. Prioritize actionable or directly relevant answers. Use bullet points if it improves readability.
 
 PERSONALITY & TONE:
 - Conversational and warm, like talking to a knowledgeable colleague
@@ -181,7 +181,7 @@ export default async function handler(req, res) {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4.1",
       messages: [
         { role: "system", content: dynamicContext },
         { role: "user", content: message }

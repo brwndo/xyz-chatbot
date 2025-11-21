@@ -328,7 +328,7 @@ export default function handler(req, res) {
                     <textarea 
                         id="messageInput" 
                         class="message-input" 
-                        placeholder="Ask about Brandon's experience, projects, or expertise..."
+                        placeholder="Ask away"
                         rows="1"
                     ></textarea>
                     <button id="sendButton" class="send-button" disabled>

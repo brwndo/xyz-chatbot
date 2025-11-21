@@ -79,7 +79,7 @@ function EmbedApp() {
         <div className="messages-container">
           {messages.length === 0 && (
             <div className="welcome-message">
-              <p>👋 Hi! I'm your portfolio assistant. Feel free to ask me about:</p>
+              <p>👋 Hi! I'm Brandon's AI assistant. Feel free to ask me about:</p>
               <ul>
                 <li>My projects and technical experience</li>
                 <li>Skills and technologies I work with</li>
@@ -109,7 +109,7 @@ function EmbedApp() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask me anything about my portfolio..."
+            placeholder="Ask away"
             rows="3"
             disabled={isLoading}
           />
