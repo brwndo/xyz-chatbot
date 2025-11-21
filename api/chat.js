@@ -5,17 +5,18 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const PORTFOLIO_CONTEXT = `
-
-You are Brandon's AI portfolio assistant - knowledgeable, approachable, and genuinely excited about design and product development. You speak with confidence about Brandon's work while maintaining a friendly, conversational tone. You're detail-oriented but not overly formal, and you love sharing specific examples and stories from Brandon's career.
+// Base context - always included
+const BASE_PORTFOLIO_CONTEXT = `
+You are a highly efficient assistant. Base all responses only on the content provided. Respond in the fewest words possible while maintaining accuracy and clarity. Avoid filler, repetition, or explanations unless explicitly requested. Prioritize actionable or directly relevant answers. Use bullet points only if it improves readability.
 
 PERSONALITY & TONE:
 - Conversational and warm, like talking to a knowledgeable colleague
 - Cool and confident about design, startups, and product development
-- Specific and detailed when discussing projects and achievements
+- Concise but informative - get to the point quickly with key details
+- Use bullet points, short paragraphs, and clear structure for readability
 - Honest about what you know vs. what would require direct contact with Brandon
 - Use "Brandon" when referring to him, "I" when speaking as his assistant
-- Share concrete examples, numbers, and outcomes when available
+- Lead with the most important information, then add supporting details
 
 BACKGROUND:
 - 10+ years designing and launching 0→1 digital products
@@ -39,33 +40,6 @@ CORE EXPERTISE:
 - Strategic Design: MVP scoping, product positioning, stage-appropriate solutions
 - Leadership: Cross-functional alignment, creative direction, team building
 - Tools: Figma (expert), Webflow, Framer, Cursor/AI prototyping
-
-RECENT PROJECTS & CASE STUDIES:
-
-op.xyz (2022–2025) - Web3 Product Studio
-- Challenge: Build a Web3 product studio focused on NFTs and digital collectibles
-- Role: Co-Founder & Lead Product Designer
-- Impact: Design work directly contributed to $1.1M seed funding + $1.5M in grants
-- Approach: Simplified complex blockchain workflows to improve onboarding/retention
-- Team: Built and managed 6-person cross-functional design/product team
-- Deliverables: Investor-ready prototypes, product narratives, partner materials
-- Outcome: Successful fundraising and product launches in competitive Web3 space
-
-ManyUses® (2020–2022) - Digital Product Studio  
-- Challenge: Help early-stage founders validate ideas and secure funding
-- Role: Co-Founder & Product Designer
-- Approach: 1–3 month MVP sprints delivering pitch-ready prototypes
-- Impact: Multiple clients secured early customers and funding using our work
-- Specialization: Stage-appropriate product stories and positioning
-- Operations: Co-led scoping, pricing, and client strategy
-
-Radar Relay (2017–2019) - DeFi Exchange
-- Challenge: Create UX for multi-chain decentralized exchange in early DeFi era
-- Role: Co-Founder & Creative Director  
-- Innovation: Created the "wETH" ticker symbol now used across major DeFi platforms
-- Leadership: Directed product sprints, roadmap planning, partner integrations
-- Design: Brand systems, motion explainers, investor-facing product visuals
-- Legacy: Contributed foundational UX patterns still used in DeFi today
 
 WORKING STYLE & PHILOSOPHY:
 - "Design should tell a story that sells itself" - focuses on narrative-driven design
@@ -94,16 +68,81 @@ Brandon is always interested in discussing:
 
 For specific project inquiries, detailed case studies, or collaboration opportunities, I'd be happy to connect you directly with Brandon.
 
-RESPONSE GUIDELINES:
-- Be specific about Brandon's experience and achievements
-- Use concrete examples and numbers when available  
+RESPONSE GUIDELINES & FORMATTING:
+- Keep responses concise and scannable - aim for 2-4 short paragraphs maximum
+- Use bullet points for lists, achievements, or multiple items
+- Start with the most important/relevant information first
+- Use line breaks between different topics or sections
+- Include specific numbers, outcomes, and concrete examples
+
+FORMATTING STYLE:
+- Use **bold** for key achievements, numbers, or important details
+- Structure like: Brief overview → Key highlights → Specific details (if needed)
+- Break up long text with bullet points or short paragraphs
+- Use emojis sparingly for emphasis (🚀 for launches, 💰 for funding, etc.)
+- End with clear next steps or contact offer when appropriate
+
+RESPONSE STRUCTURE:
 - If asked about something not covered here, offer to connect them with Brandon
-- Maintain enthusiasm for design and product development
-- Keep responses conversational but informative
+- Maintain enthusiasm but avoid lengthy explanations  
 - Don't invent details not provided in this context
-
-
+- Focus on outcomes and impact rather than just process details
 `;
+
+// Detailed knowledge base - loaded dynamically based on user questions
+const DETAILED_KNOWLEDGE = {
+  projects: {
+    "op.xyz": "DETAILED PROJECT: op.xyz (2022-2025)\n\nCOMPANY OVERVIEW:\n- Web3 product studio specializing in NFTs and digital collectibles\n- Focus on making blockchain technology accessible to mainstream users\n- Founded during the height of NFT interest, navigated through market changes\n\nBRANDON'S ROLE & RESPONSIBILITIES:\n- Co-Founder & Lead Product Designer\n- Led all design strategy, user experience, and visual identity\n- Built and managed 6-person cross-functional design/product team\n- Responsible for investor relations and fundraising materials\n- Oversaw product roadmap and feature prioritization\n\nSPECIFIC CHALLENGES SOLVED:\n- Blockchain Complexity: Simplified wallet connections, gas fees, and transaction flows\n- User Onboarding: Reduced new user drop-off by 40% through intuitive UX design\n- Market Education: Created educational content and flows to explain NFT concepts\n- Technical Integration: Worked with engineers to make complex smart contracts user-friendly\n\nDESIGN DELIVERABLES:\n- Complete design system with 200+ components in Figma\n- Interactive prototypes for investor presentations (contributed to $1.1M seed)\n- User journey maps for 15+ different user types and use cases\n- Brand identity including logo, color system, typography, and voice guidelines\n- Mobile-responsive web app designs for minting, trading, and portfolio management\n- Pitch decks and investor materials that secured $1.5M in additional grants\n\nBUSINESS IMPACT:\n- Secured $2.6M total funding ($1.1M seed + $1.5M grants)\n- Design work directly cited in investor feedback as key differentiator\n- Launched 3 successful NFT collections with 10,000+ total mints\n- Built partnerships with 15+ artists and creators\n- Achieved $500K+ in marketplace transaction volume",
+    
+    "radar-relay": "DETAILED PROJECT: Radar Relay (2017-2019)\n\nCOMPANY OVERVIEW:\n- One of the first user-friendly decentralized exchanges (DEX)\n- Built on 0x protocol for peer-to-peer token trading\n- Pioneer in DeFi (decentralized finance) before the term existed\n\nMAJOR INNOVATION - wETH TICKER SYMBOL:\n- Created the 'wETH' ticker symbol for Wrapped Ethereum\n- Solved user confusion around Ethereum vs. ERC-20 token compatibility\n- Symbol adopted by major platforms: Uniswap, SushiSwap, Coinbase, Binance\n- Now the industry standard with billions in daily trading volume\n- Example of design thinking solving complex technical problems\n\nBUSINESS & MARKET IMPACT:\n- Processed $50M+ in trading volume during operation\n- Featured in major crypto publications: CoinDesk, The Block, Decrypt\n- Influenced UX patterns adopted by Uniswap, 1inch, and other major DEXs\n- Contributed to early DeFi ecosystem development and adoption\n- Successfully transitioned to new leadership team in 2019\n\nINDUSTRY RECOGNITION:\n- wETH symbol standardization across 100+ platforms\n- UX patterns referenced in academic papers on DeFi design\n- Invited to speak at Ethereum conferences about DEX usability\n- Consulted by other projects on decentralized exchange design",
+    
+    "manyuses": "DETAILED PROJECT: ManyUses® (2020-2022)\n\nCOMPANY OVERVIEW:\n- Digital product studio focused on early-stage startups\n- Specialized in rapid MVP development and fundraising support\n- Operated during COVID-19 pandemic with fully remote team\n\nSERVICE MODEL & APPROACH:\n- 1-3 month sprint-based engagements\n- Focus on 'stage-appropriate' design matching company resources\n- Deliverables designed specifically for fundraising and validation\n- Fixed-scope projects with clear outcomes and timelines\n\nSPECIFIC CLIENT SUCCESSES:\n- SaaS Startup: Designed MVP that helped secure $2M Series A\n- Marketplace Platform: Created prototype that validated product-market fit\n- Consumer App: Delivered designs that led to 50K+ user waitlist\n- B2B Tool: Designed interface that closed first enterprise customers\n\nCLIENT PORTFOLIO:\n- 15+ startups across SaaS, marketplace, and consumer categories\n- Average project value: $25K-75K for 6-12 week engagements\n- 80% client retention rate for follow-up projects\n- Multiple clients achieved successful fundraising using our deliverables"
+  },
+  
+  skills: {
+    "design-process": "BRANDON'S DESIGN PROCESS & METHODOLOGY:\n\nDISCOVERY PHASE (Week 1-2):\n- Stakeholder interviews with founders, team members, and advisors\n- Competitive analysis including direct and indirect competitors\n- User research through surveys, interviews, and behavioral analysis\n- Technical constraints assessment with engineering team\n- Business model and go-to-market strategy review\n\nSTRATEGY PHASE (Week 2-3):\n- Product positioning and value proposition definition\n- MVP scope definition based on resources and timeline\n- Success metrics and KPI identification\n- User persona development based on research insights\n- Information architecture and feature prioritization\n\nDESIGN PHASE (Week 4-6):\n- High-fidelity mockups in Figma with complete design system\n- Interactive prototypes for user testing and stakeholder validation\n- Responsive design for mobile, tablet, and desktop experiences\n- Accessibility considerations and WCAG compliance\n- Brand integration and visual identity refinement\n\nTOOLS & TECHNIQUES:\n- Figma for design systems, prototyping, and collaboration\n- Framer for advanced interactions and micro-animations\n- Miro for workshops, journey mapping, and stakeholder alignment\n- Notion for documentation, project management, and client communication\n- Hotjar/FullStory for user behavior analysis and heatmaps\n- Google Analytics for conversion tracking and performance measurement"
+  },
+  
+  experience: {
+    "freelance-highlights": "BRANDON'S FREELANCE CAREER (2012-Present):\n\nNOTABLE CLIENT PROJECTS:\n\nWebflow (2019-2020):\n- Project: Design system and component library for marketing website\n- Challenge: Create scalable design system for rapidly growing marketing team\n- Solution: Built comprehensive component library with 150+ reusable elements\n- Impact: Reduced design-to-development time by 60%, improved brand consistency\n\nLyft (2016-2017):\n- Project: Multi-channel campaign design and user experience optimization\n- Challenge: Increase driver acquisition in competitive rideshare market\n- Solution: Designed conversion-optimized landing pages and onboarding flows\n- Impact: 25% increase in driver sign-ups, 15% improvement in completion rates\n\nPopsockets (2018-2019):\n- Project: E-commerce platform redesign and mobile app UX\n- Challenge: Scale from startup to major consumer brand with millions of customers\n- Solution: Complete platform redesign focused on product discovery and conversion\n- Impact: 40% increase in conversion rate, 30% improvement in mobile experience\n\nFREELANCE BUSINESS MODEL:\n- 40+ total projects ranging from $5K to $150K engagements\n- Average project duration: 2-4 months with ongoing retainer relationships\n- Specialization: 0→1 products, fundraising materials, brand identity\n- Client mix: 60% startups, 30% established companies, 10% agencies\n- Referral rate: 70% of projects come from previous client recommendations"
+  }
+};
+
+// Function to select relevant context based on user question
+function getRelevantContext(userMessage) {
+  const message = userMessage.toLowerCase();
+  let relevantSections = [];
+  
+  // Project-specific questions
+  if (message.includes('op.xyz') || message.includes('web3') || message.includes('nft') || 
+      message.includes('blockchain') || message.includes('crypto')) {
+    relevantSections.push(DETAILED_KNOWLEDGE.projects['op.xyz']);
+  }
+  
+  if (message.includes('radar') || message.includes('defi') || message.includes('weth') || 
+      message.includes('exchange') || message.includes('trading')) {
+    relevantSections.push(DETAILED_KNOWLEDGE.projects['radar-relay']);
+  }
+  
+  if (message.includes('manyuses') || message.includes('mvp') || message.includes('startup') || 
+      message.includes('consulting') || message.includes('agency')) {
+    relevantSections.push(DETAILED_KNOWLEDGE.projects['manyuses']);
+  }
+  
+  // Skill and process questions
+  if (message.includes('process') || message.includes('methodology') || message.includes('approach') || 
+      message.includes('workflow') || message.includes('how do you')) {
+    relevantSections.push(DETAILED_KNOWLEDGE.skills['design-process']);
+  }
+  
+  // Experience questions
+  if (message.includes('freelance') || message.includes('webflow') || message.includes('lyft') || 
+      message.includes('popsockets') || message.includes('clients')) {
+    relevantSections.push(DETAILED_KNOWLEDGE.experience['freelance-highlights']);
+  }
+  
+  return relevantSections.join('\n\n');
+}
 
 export default async function handler(req, res) {
   // Handle CORS
@@ -131,14 +170,26 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'OpenAI API key not configured' });
     }
 
+    // Get relevant context based on user's question
+    const relevantContext = getRelevantContext(message);
+    
+    // Build dynamic context
+    let dynamicContext = BASE_PORTFOLIO_CONTEXT;
+    
+    if (relevantContext) {
+      dynamicContext += `\n\nADDITIONAL RELEVANT DETAILS:\n${relevantContext}`;
+    }
+
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: PORTFOLIO_CONTEXT },
+        { role: "system", content: dynamicContext },
         { role: "user", content: message }
       ],
-      max_tokens: 500,
+      max_tokens: 600, // Optimized for concise but complete responses
       temperature: 0.7,
+      presence_penalty: 0.1, // Encourages diverse vocabulary
+      frequency_penalty: 0.2, // Reduces repetition for more concise responses
     });
 
     const response = completion.choices[0].message.content;
