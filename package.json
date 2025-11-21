@@ -1,37 +1,23 @@
 {
-  "name": "portfolio-chatbot",
+  "name": "portfolio-chatbot-embed",
   "version": "1.0.0",
-  "description": "AI-powered portfolio chatbot using OpenAI API",
-  "main": "index.js",
+  "description": "Embeddable AI-powered portfolio chatbot using OpenAI API",
+  "main": "api/chat.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "node server.js",
-    "dev:full": "npm run build && npm start",
-    "postinstall": "npm run build"
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
   },
   "keywords": [
     "chatbot",
     "portfolio",
     "openai",
-    "react",
+    "embed",
+    "widget",
     "ai"
   ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "openai": "^4.20.1",
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
-    "@vitejs/plugin-react": "^4.1.1",
-    "vite": "^4.5.0"
+    "openai": "^4.20.1"
   }
 }

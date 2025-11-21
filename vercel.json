@@ -1,49 +1,13 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
   "functions": {
     "api/chat.js": {
       "maxDuration": 30
-    }
-  },
-  "headers": [
-    {
-      "source": "/chatbot-widget.js",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type"
-        },
-        {
-          "key": "Cross-Origin-Resource-Policy",
-          "value": "cross-origin"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
     },
-    {
-      "source": "/embed.html",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "ALLOWALL"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "frame-ancestors *;"
-        }
-      ]
+    "api/embed-code.js": {
+      "maxDuration": 10
+    },
+    "api/widget.js": {
+      "maxDuration": 10
     }
-  ]
+  }
 }
