@@ -8,6 +8,15 @@
     },
     "api/widget.js": {
       "maxDuration": 10
+    },
+    "api/embed.js": {
+      "maxDuration": 10
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/embed.html",
+      "destination": "/api/embed"
+    }
+  ]
 }
