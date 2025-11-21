@@ -7,6 +7,12 @@ export default defineConfig({
   build: {
     outDir: '../dist',
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: 'frontend/index.html',
+        embed: 'frontend/embed.html'
+      }
+    }
   },
   server: {
     proxy: {

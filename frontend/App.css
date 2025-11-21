@@ -345,3 +345,22 @@
     opacity: 0;
   }
 }
+
+/* Embed mode styles */
+.chat-container.embed-mode {
+  position: relative !important;
+  bottom: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+.embed-mode .chat-toggle-btn {
+  display: none !important;
+}
