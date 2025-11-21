@@ -40,19 +40,28 @@ A floating chat widget that appears on any page:
 </script>
 ```
 
-### 🔒 For Webflow & CORS-Restricted Platforms:
-If you get CORS errors, use this alternative approach:
+### 🔒 CORS-Free Solutions (For Webflow, Squarespace, etc.):
 
+**Method A: Get Inline Code (Recommended)**
+Visit this URL to get copy-paste code:
+```
+https://xyz-chatbot.vercel.app/api/embed-code
+```
+Copy the entire HTML block and paste it into your website's custom code section.
+
+**Method B: Use API Endpoint**
 ```html
-<!-- Embed this iframe instead of the script -->
+<script src="https://xyz-chatbot.vercel.app/api/widget" data-auto-init="true"></script>
+```
+
+**Method C: Invisible iframe**
+```html
 <iframe 
   src="https://xyz-chatbot.vercel.app/embed-snippet.html" 
   style="position: fixed; bottom: 0; right: 0; width: 100vw; height: 100vh; border: none; pointer-events: none; z-index: 9999;"
   title="Chatbot Widget">
 </iframe>
 ```
-
-Or copy the content from `/embed-snippet.html` and paste it directly into your page's custom code section.
 
 ### Advanced Configuration:
 ```html
