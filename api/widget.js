@@ -50,8 +50,10 @@ export default function handler(req, res) {
       this.createIframe();
     }
     
-    createStyles() {
+      createStyles() {
       const styles = \`
+        @import url('https://cdn.jsdelivr.net/npm/@vercel/geist@1.0.0/dist/font.css');
+        
         .chatbot-widget-button {
           position: fixed;
           \${this.getPositionStyles()}
@@ -66,6 +68,7 @@ export default function handler(req, res) {
           display: flex;
           align-items: center;
           justify-content: center;
+          font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           font-size: 24px;
           color: white;
           transition: all 0.3s ease;

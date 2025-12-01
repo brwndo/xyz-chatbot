@@ -14,6 +14,7 @@ export default function handler(req, res) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio Chatbot - Brandon Arthur XYZ</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vercel/geist@1.0.0/dist/font.css">
     <style>
       * {
         margin: 0;
@@ -22,7 +23,7 @@ export default function handler(req, res) {
       }
       
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
         color: white;
         min-height: 100vh;
