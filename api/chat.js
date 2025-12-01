@@ -105,6 +105,10 @@ const DETAILED_KNOWLEDGE = {
   
   experience: {
     "freelance-highlights": "BRANDON'S FREELANCE CAREER (2012-Present):\n\nNOTABLE CLIENT PROJECTS:\n\nWebflow (2019-2020):\n- Project: Design system and component library for marketing website\n- Challenge: Create scalable design system for rapidly growing marketing team\n- Solution: Built comprehensive component library with 150+ reusable elements\n- Impact: Reduced design-to-development time by 60%, improved brand consistency\n\nLyft (2016-2017):\n- Project: Multi-channel campaign design and user experience optimization\n- Challenge: Increase driver acquisition in competitive rideshare market\n- Solution: Designed conversion-optimized landing pages and onboarding flows\n- Impact: 25% increase in driver sign-ups, 15% improvement in completion rates\n\nPopsockets (2018-2019):\n- Project: E-commerce platform redesign and mobile app UX\n- Challenge: Scale from startup to major consumer brand with millions of customers\n- Solution: Complete platform redesign focused on product discovery and conversion\n- Impact: 40% increase in conversion rate, 30% improvement in mobile experience\n\nFREELANCE BUSINESS MODEL:\n- 40+ total projects ranging from $5K to $150K engagements\n- Average project duration: 2-4 months with ongoing retainer relationships\n- Specialization: 0→1 products, fundraising materials, brand identity\n- Client mix: 60% startups, 30% established companies, 10% agencies\n- Referral rate: 70% of projects come from previous client recommendations"
+  },
+  
+  contact: {
+    "information": "HOW TO CONTACT BRANDON:\n\nPREFERRED CONTACT METHODS:\n- Email: hi@brandonarthur.xyz\n- LinkedIn: /in/brandonarthurroth \n- Portfolio: www.brandonarthur.xyz\n\nAVAILABILITY:\n- Response time: Typically responds within 24-48 hours\n- Best time to reach out: Monday through Friday from 9am to 5pm mst\n- Currently: open for new projects\n\nWHAT TO INCLUDE WHEN REACHING OUT:\n- Project overview and goals\n- Timeline and budget range\n- Team size and current stage\n- Specific design challenges or needs\n\nPROJECT INQUIRIES:\n- Open to: [Types of projects you're interested in]\n- Project scope: I typically work on projects that include some brand work and some web design / development work\n- Engagement types: I have a subscription service for $3000/month you can find out more at preset.design. I also work on a project basis for great clients."
   }
 };
 
@@ -112,15 +116,9 @@ const DETAILED_KNOWLEDGE = {
 async function fetchAEODocument() {
   try {
     // Option 1: Fetch from URL (replace with your actual AEO document URL)
-    // const response = await fetch('https://your-domain.com/aeo-document.txt');
-    // return await response.text();
-    
-    // Option 2: Return placeholder for now (replace with actual AEO content)
-    return `AEO DOCUMENT REFERENCE:
-- This is where your real-time AEO document content would appear
-- The chatbot can now reference current policies and procedures
-- Content updates automatically when the source document changes
-- Add your actual AEO document URL or file path above`;
+  const response = await fetch('https://www.brandonarthur.xyz/aeo-content');
+    return await response.text();
+
   } catch (error) {
     console.error('Failed to fetch AEO document:', error);
     return null;
@@ -168,6 +166,14 @@ async function getRelevantContext(userMessage) {
   if (message.includes('freelance') || message.includes('webflow') || message.includes('lyft') || 
       message.includes('popsockets') || message.includes('clients')) {
     relevantSections.push(DETAILED_KNOWLEDGE.experience['freelance-highlights']);
+  }
+  
+  // Contact information questions
+  if (message.includes('contact') || message.includes('reach out') || message.includes('email') || 
+      message.includes('linkedin') || message.includes('connect') || message.includes('get in touch') ||
+      message.includes('hire') || message.includes('work together') || message.includes('collaborate') ||
+      message.includes('available') || message.includes('inquiry') || message.includes('project inquiry')) {
+    relevantSections.push(DETAILED_KNOWLEDGE.contact['information']);
   }
   
   return relevantSections.join('\n\n');
