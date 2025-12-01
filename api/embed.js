@@ -12,6 +12,7 @@ export default function handler(req, res) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Chatbot - Embed</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vercel/geist@1.0.0/dist/font.css">
     <style>
         * {
             margin: 0;
@@ -20,7 +21,7 @@ export default function handler(req, res) {
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             height: 100vh;
             overflow: hidden;
             background: #1a1a1a;
@@ -197,6 +198,7 @@ export default function handler(req, res) {
             border-radius: 20px;
             padding: 12px 16px;
             color: white;
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             font-size: 14px;
             line-height: 1.4;
             resize: none;
@@ -223,6 +225,7 @@ export default function handler(req, res) {
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             flex-shrink: 0;

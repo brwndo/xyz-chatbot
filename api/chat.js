@@ -108,10 +108,39 @@ const DETAILED_KNOWLEDGE = {
   }
 };
 
+// Function to fetch AEO document in real-time
+async function fetchAEODocument() {
+  try {
+    // Option 1: Fetch from URL (replace with your actual AEO document URL)
+    // const response = await fetch('https://your-domain.com/aeo-document.txt');
+    // return await response.text();
+    
+    // Option 2: Return placeholder for now (replace with actual AEO content)
+    return `AEO DOCUMENT REFERENCE:
+- This is where your real-time AEO document content would appear
+- The chatbot can now reference current policies and procedures
+- Content updates automatically when the source document changes
+- Add your actual AEO document URL or file path above`;
+  } catch (error) {
+    console.error('Failed to fetch AEO document:', error);
+    return null;
+  }
+}
+
 // Function to select relevant context based on user question
-function getRelevantContext(userMessage) {
+async function getRelevantContext(userMessage) {
   const message = userMessage.toLowerCase();
   let relevantSections = [];
+  
+  // AEO Document reference - triggers on policy/procedure questions
+  if (message.includes('aeo') || message.includes('policy') || 
+      message.includes('procedure') || message.includes('guideline') ||
+      message.includes('document') || message.includes('reference')) {
+    const aeoContent = await fetchAEODocument();
+    if (aeoContent) {
+      relevantSections.push(aeoContent);
+    }
+  }
   
   // Project-specific questions
   if (message.includes('op.xyz') || message.includes('web3') || message.includes('nft') || 
@@ -171,7 +200,7 @@ export default async function handler(req, res) {
     }
 
     // Get relevant context based on user's question
-    const relevantContext = getRelevantContext(message);
+    const relevantContext = await getRelevantContext(message);
     
     // Build dynamic context
     let dynamicContext = BASE_PORTFOLIO_CONTEXT;
