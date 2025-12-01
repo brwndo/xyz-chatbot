@@ -100,7 +100,6 @@ export default function handler(req, res) {
         
         .message.user {
             align-self: flex-end;
-            flex-direction: row-reverse;
         }
         
         .message-avatar {
@@ -114,12 +113,8 @@ export default function handler(req, res) {
             flex-shrink: 0;
         }
         
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
-        }
-        
         .message.bot .message-avatar {
-            background: linear-gradient(135deg, #ff8c42 0%, #ff6b1a 100%);
+            background: #2a2a2a;
         }
         
         .message-content {
@@ -131,8 +126,8 @@ export default function handler(req, res) {
         }
         
         .message.user .message-content {
-            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
-            color: white;
+            background: #ff8c42;
+            color: black;
         }
         
         .message-content strong {
@@ -484,21 +479,21 @@ export default function handler(req, res) {
                 const messageEl = document.createElement('div');
                 messageEl.className = 'message ' + sender;
 
-                const avatar = document.createElement('div');
-                avatar.className = 'message-avatar';
-                avatar.textContent = sender === 'user' ? '👤' : '🤖';
-
                 const content = document.createElement('div');
                 content.className = 'message-content';
                 
                 if (sender === 'bot') {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'message-avatar';
+                    avatar.textContent = '🤖';
+                    messageEl.appendChild(avatar);
+                    
                     const formattedText = this.formatMessage(text);
                     content.innerHTML = formattedText;
                 } else {
                     content.textContent = text;
                 }
 
-                messageEl.appendChild(avatar);
                 messageEl.appendChild(content);
                 
                 this.messagesContainer.appendChild(messageEl);
