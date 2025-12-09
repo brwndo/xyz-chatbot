@@ -84,6 +84,28 @@ export default function handler(req, res) {
             margin: 0;
         }
         
+        .close-button {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+            transition: opacity 0.2s;
+        }
+        
+        .close-button:hover {
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .close-button {
+                display: block;
+            }
+        }
+        
         .messages-container {
             flex: 1;
             overflow-y: auto;
@@ -311,6 +333,7 @@ export default function handler(req, res) {
                         <h3>Brawndo Bot</h3>
                     </div>
                 </div>
+                <button class="close-button" id="closeButton" aria-label="Close chat">✕</button>
             </div>
             
             <div class="messages-container" id="messages">
@@ -352,6 +375,7 @@ export default function handler(req, res) {
                 this.messagesContainer = document.getElementById('messages');
                 this.messageInput = document.getElementById('messageInput');
                 this.sendButton = document.getElementById('sendButton');
+                this.closeButton = document.getElementById('closeButton');
 
                 if (!this.messagesContainer || !this.messageInput || !this.sendButton) {
                     return;
@@ -360,6 +384,14 @@ export default function handler(req, res) {
                 this.sendButton.addEventListener('click', () => {
                     this.sendMessage();
                 });
+                
+                if (this.closeButton) {
+                    this.closeButton.addEventListener('click', () => {
+                        if (window.parent && window.parent !== window) {
+                            window.parent.postMessage({ type: 'closeChatbot' }, '*');
+                        }
+                    });
+                }
                 
                 this.messageInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
