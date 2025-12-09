@@ -22,6 +22,8 @@ export default function handler(req, res) {
         
         body {
             font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 400;
+            font-style: normal;
             height: 100vh;
             overflow: hidden;
             background: #1a1a1a;
@@ -43,7 +45,7 @@ export default function handler(req, res) {
         }
         
         .chat-header {
-            background: #2a2a2a;
+            background: linear-gradient(135deg, #2d2d2d 0%, #2a2a2a 100%);
             color: white;
             padding: 16px 20px;
             display: flex;
@@ -71,8 +73,8 @@ export default function handler(req, res) {
         }
         
         .header-text h3 {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 400;
             margin: 0;
         }
         
