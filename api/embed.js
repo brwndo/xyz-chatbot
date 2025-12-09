@@ -340,42 +340,28 @@ export default function handler(req, res) {
     </div>
 
     <script>
-        console.log('Fixed embed script starting...');
-        
         class ChatApp {
             constructor() {
-                console.log('ChatApp constructor called');
                 this.messages = [];
                 this.isLoading = false;
                 this.init();
             }
 
             init() {
-                console.log('ChatApp initializing...');
-                
                 this.messagesContainer = document.getElementById('messages');
                 this.messageInput = document.getElementById('messageInput');
                 this.sendButton = document.getElementById('sendButton');
 
-                console.log('Elements found:', {
-                    messagesContainer: !!this.messagesContainer,
-                    messageInput: !!this.messageInput,
-                    sendButton: !!this.sendButton
-                });
-
                 if (!this.messagesContainer || !this.messageInput || !this.sendButton) {
-                    console.error('Missing required elements!');
                     return;
                 }
 
                 this.sendButton.addEventListener('click', () => {
-                    console.log('Send button clicked');
                     this.sendMessage();
                 });
                 
                 this.messageInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
-                        console.log('Enter key pressed');
                         e.preventDefault();
                         this.sendMessage();
                     }
@@ -387,7 +373,6 @@ export default function handler(req, res) {
                 });
 
                 this.updateSendButton();
-                console.log('ChatApp initialized successfully');
             }
 
             adjustTextareaHeight() {
@@ -402,12 +387,9 @@ export default function handler(req, res) {
             }
 
             async sendMessage() {
-                console.log('sendMessage called');
                 const message = this.messageInput.value.trim();
-                console.log('Message:', message);
                 
                 if (!message || this.isLoading) {
-                    console.log('Message empty or loading, returning');
                     return;
                 }
 
@@ -417,7 +399,6 @@ export default function handler(req, res) {
                 this.setLoading(true);
 
                 try {
-                    console.log('Sending API request...');
                     const response = await fetch('/api/chat', {
                         method: 'POST',
                         headers: {
@@ -425,19 +406,14 @@ export default function handler(req, res) {
                         },
                         body: JSON.stringify({ message }),
                     });
-
-                    console.log('API response status:', response.status);
                     
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
 
                     const data = await response.json();
-                    console.log('API response data:', data);
-                    
                     this.addMessage(data.response || 'No response received', 'bot');
                 } catch (error) {
-                    console.error('Error:', error);
                     this.addMessage('Sorry, there was an error processing your message.', 'bot');
                 } finally {
                     this.setLoading(false);
@@ -474,8 +450,6 @@ export default function handler(req, res) {
             }
 
             addMessage(text, sender) {
-                console.log('Adding message:', text, sender);
-                
                 const messageEl = document.createElement('div');
                 messageEl.className = 'message ' + sender;
 
@@ -525,7 +499,6 @@ export default function handler(req, res) {
 
         // Initialize when DOM is ready
         function initChat() {
-            console.log('DOM ready, creating ChatApp');
             new ChatApp();
         }
 
@@ -534,8 +507,6 @@ export default function handler(req, res) {
         } else {
             initChat();
         }
-
-        console.log('Fixed embed script loaded');
     </script>
 </body>
 </html>`;

@@ -3,24 +3,14 @@
     "api/chat.js": {
       "maxDuration": 30
     },
-    "api/embed-code.js": {
-      "maxDuration": 10
-    },
     "api/widget.js": {
       "maxDuration": 10
     },
     "api/embed.js": {
       "maxDuration": 10
-    },
-    "api/index.js": {
-      "maxDuration": 10
     }
   },
   "rewrites": [
-    {
-      "source": "/",
-      "destination": "/api/index"
-    },
     {
       "source": "/embed.html",
       "destination": "/api/embed"
