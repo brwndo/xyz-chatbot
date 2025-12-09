@@ -45,7 +45,7 @@ export default function handler(req, res) {
         }
         
         .chat-header {
-            background: linear-gradient(135deg, #2d2d2d 0%, #2a2a2a 100%);
+            background: linear-gradient(135deg, #121212 100%,#333333 100%);
             color: white;
             padding: 16px 20px;
             display: flex;
@@ -89,7 +89,7 @@ export default function handler(req, res) {
             background: transparent;
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 16px;
             cursor: pointer;
             padding: 4px;
             line-height: 1;
