@@ -91,7 +91,7 @@ export default function handler(req, res) {
         }
         
         .chatbot-widget-iframe.open {
-          transform: scale(1) translateY(0);
+          transform: scale(1) translateY(100px);
           opacity: 1;
           pointer-events: auto;
         }
