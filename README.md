@@ -1,27 +1,31 @@
 # Portfolio Chatbot
 
-An AI-powered chatbot that answers questions about your portfolio, built with React and OpenAI's API.
+An embeddable AI-powered chatbot that answers questions about your portfolio, built with serverless functions and OpenAI's API.
 
 ## Features
 
 - 🤖 AI-powered responses using OpenAI's GPT models
-- 💬 Real-time chat interface
+- 💬 Real-time chat interface (with AI chat icon)
 - 📱 Responsive design for mobile and desktop
-- ⚡ Serverless API endpoint
+- ⚡ Serverless API endpoints (Vercel)
 - 🎨 Modern, beautiful UI
+- 🔧 Easy embedding with a single script tag
 
 ## Project Structure
 
 ```
-portfolio-chatbot/
-├── frontend/
-│   ├── App.jsx          # Main chat application component
-│   ├── ChatMessage.jsx  # Individual message component
-│   ├── App.css          # Main application styles
-│   └── ChatMessage.css  # Message component styles
+xyz-chatbot/
 ├── api/
-│   └── chat.js          # Serverless endpoint for OpenAI integration
-├── package.json         # Project dependencies and scripts
+│   ├── chat.js          # Chat API endpoint (OpenAI integration)
+│   ├── embed.js         # Embed HTML page (chat interface)
+│   ├── widget.js        # Widget script endpoint (floating button)
+│   └── index.js         # Landing page dashboard
+├── public/
+│   └── images/
+│       └── chat-ai-fill.svg  # Chat icon
+├── local-dev.js         # Local development server
+├── vercel.json          # Vercel configuration
+├── package.json         # Project dependencies
 ├── env.example          # Environment variables template
 └── README.md           # This file
 ```
@@ -31,7 +35,6 @@ portfolio-chatbot/
 ### 1. Install Dependencies
 
 ```bash
-cd portfolio-chatbot
 npm install
 ```
 
@@ -51,91 +54,93 @@ npm install
 
 ### 3. Customize Portfolio Information
 
-Edit the `PORTFOLIO_CONTEXT` in `api/chat.js` to include your actual:
+Edit the `PORTFOLIO_CONTEXT` and `DETAILED_KNOWLEDGE` in `api/chat.js` to include your actual:
 - Background and experience
 - Projects and achievements
 - Skills and technologies
 - Any other relevant information
 
-### 4. Run the Application
+### 4. Run Locally
 
-For development:
 ```bash
 npm run dev
 ```
 
-For production build:
-```bash
-npm run build
-npm run preview
+This starts a local server at `http://localhost:3000` that mimics the Vercel serverless environment.
+
+## Embedding the Chatbot
+
+### Method: JavaScript Widget (Recommended)
+
+Add this single script tag to your website:
+
+```html
+<script 
+  src="https://xyz-chatbot.vercel.app/api/widget" 
+  data-auto-init="true">
+</script>
 ```
 
-## Deployment Options
+### Configuration Options
+
+```html
+<script src="https://xyz-chatbot.vercel.app/api/widget"></script>
+<script>
+  new ChatbotWidget({
+    position: 'bottom-right',    // bottom-right, bottom-left, top-right, top-left
+    width: '350px',
+    height: '500px',
+    buttonColor: '#000000'       // Custom button color
+  });
+</script>
+```
+
+Or use data attributes:
+
+```html
+<script 
+  src="https://xyz-chatbot.vercel.app/api/widget" 
+  data-auto-init="true"
+  data-position="bottom-left"
+  data-button-color="#000000">
+</script>
+```
+
+See `EMBED.md` for more embedding options and examples.
+
+## Deployment
 
 ### Vercel (Recommended)
+
 1. Push your code to GitHub
 2. Connect your repository to Vercel
 3. Add your `OPENAI_API_KEY` in Vercel's environment variables
 4. Deploy!
 
-### Netlify
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder to Netlify
-3. Configure the serverless function in `netlify.toml`
-4. Add environment variables in Netlify settings
-
-### Other Platforms
-The serverless function (`api/chat.js`) is compatible with most serverless platforms. Adjust the export format as needed for your chosen platform.
+The project is configured for Vercel serverless functions - no build step required.
 
 ## Customization
 
-### Styling
-- Modify `frontend/App.css` for overall application styling
-- Modify `frontend/ChatMessage.css` for message-specific styling
-- Colors, fonts, and layout can be easily customized
-
 ### AI Behavior
-- Edit the `PORTFOLIO_CONTEXT` in `api/chat.js`
+- Edit the `PORTFOLIO_CONTEXT` and `DETAILED_KNOWLEDGE` in `api/chat.js`
 - Adjust `temperature`, `max_tokens`, and other OpenAI parameters
-- Switch between different GPT models (gpt-3.5-turbo, gpt-4, etc.)
+- Switch between different GPT models
 
-### Features
-- Add message history persistence
-- Implement typing indicators
-- Add file upload capabilities
-- Include voice input/output
+### Widget Styling
+- Button color: Set via `buttonColor` option
+- Position: Set via `position` option
+- Size: Set via `width` and `height` options
 
-## API Usage
+### Chat Interface
+- Modify styles in `api/embed.js` (all CSS is inline)
 
-The chat endpoint accepts POST requests:
+## API Endpoints
 
-```javascript
-fetch('/api/chat', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ message: 'Your question here' })
-})
-```
-
-Response format:
-```json
-{
-  "response": "AI-generated response text"
-}
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- `POST /api/chat` - Chat API endpoint
+- `GET /api/widget` - Widget script
+- `GET /api/embed` - Embed HTML page
+- `GET /` - Landing page dashboard
 
 ## License
 
 MIT License - feel free to use this project for your own portfolio!
-
-## Support
-
-If you encounter any issues or have questions, please open an issue on GitHub or contact me directly.
