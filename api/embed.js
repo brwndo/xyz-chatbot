@@ -304,17 +304,16 @@ export default function handler(req, res) {
         <div class="chat-container">
             <div class="chat-header">
                 <div class="header-content">
-                    <div class="avatar">🤖</div>
+                    <div class="avatar"><img src="/images/brxyz-chat-avatar.svg" alt="Bot avatar" style="width: 100%; height: 100%; object-fit: contain;"></div>
                     <div class="header-text">
-                        <h3>Portfolio Assistant</h3>
-                        <p>Ask me about Brandon's work & experience</p>
+                        <h3>Brawndo Bot</h3>
                     </div>
                 </div>
             </div>
             
             <div class="messages-container" id="messages">
                 <div class="message bot">
-                    <div class="message-avatar">🤖</div>
+                    <div class="message-avatar"><img src="/images/brxyz-chat-avatar.svg" alt="Bot avatar" style="width: 100%; height: 100%; object-fit: contain;"></div>
                     <div class="message-content">
                         Hi! I'm Brandon's portfolio assistant. Ask me about his projects, experience, or anything you'd like to know about his work.
                     </div>
@@ -459,7 +458,13 @@ export default function handler(req, res) {
                 if (sender === 'bot') {
                     const avatar = document.createElement('div');
                     avatar.className = 'message-avatar';
-                    avatar.textContent = '🤖';
+                    const avatarImg = document.createElement('img');
+                    avatarImg.src = '/images/brxyz-chat-avatar.svg';
+                    avatarImg.alt = 'Bot avatar';
+                    avatarImg.style.width = '100%';
+                    avatarImg.style.height = '100%';
+                    avatarImg.style.objectFit = 'contain';
+                    avatar.appendChild(avatarImg);
                     messageEl.appendChild(avatar);
                     
                     const formattedText = this.formatMessage(text);
@@ -486,7 +491,7 @@ export default function handler(req, res) {
                 if (loading) {
                     const loader = document.createElement('div');
                     loader.className = 'loading-indicator';
-                    loader.innerHTML = '<div class="message-avatar">🤖</div><div class="typing-dots"><span></span><span></span><span></span></div>';
+                    loader.innerHTML = '<div class="message-avatar"><img src="/images/brxyz-chat-avatar.svg" alt="Bot avatar" style="width: 100%; height: 100%; object-fit: contain;"></div><div class="typing-dots"><span></span><span></span><span></span></div>';
                     this.messagesContainer.appendChild(loader);
                     this.scrollToBottom();
                 }

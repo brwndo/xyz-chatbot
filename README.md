@@ -4,7 +4,7 @@ An embeddable AI-powered chatbot that answers questions about your portfolio, bu
 
 ## Features
 
-- 🤖 AI-powered responses using OpenAI's GPT models
+- AI-powered responses using OpenAI's GPT models
 - 💬 Real-time chat interface (with AI chat icon)
 - 📱 Responsive design for mobile and desktop
 - ⚡ Serverless API endpoints (Vercel)
