@@ -336,6 +336,18 @@ export default function handler(req, res) {
         .messages-container::-webkit-scrollbar-thumb:hover {
             background: #444;
         }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -367,9 +379,12 @@ export default function handler(req, res) {
                         class="message-input" 
                         placeholder="Ask away"
                         rows="1"
+                        aria-label="Message input"
+                        aria-describedby="input-description"
                     ></textarea>
-                    <button id="sendButton" class="send-button" disabled>
-                        <svg viewBox="0 0 24 24">
+                    <span id="input-description" class="sr-only">Type your message and press Enter to send, or Shift+Enter for a new line</span>
+                    <button id="sendButton" class="send-button" disabled aria-label="Send message">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
                         </svg>
                     </button>
@@ -387,12 +402,18 @@ export default function handler(req, res) {
             }
 
             init() {
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:389',message:'ChatApp init() called',data:{windowLocation:window.location.href,isIframe:window.self !== window.top,parentOrigin:window.parent !== window.self ? window.location.origin : 'same'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                // #endregion
                 this.messagesContainer = document.getElementById('messages');
                 this.messageInput = document.getElementById('messageInput');
                 this.sendButton = document.getElementById('sendButton');
                 this.closeButton = document.getElementById('closeButton');
 
                 if (!this.messagesContainer || !this.messageInput || !this.sendButton) {
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:395',message:'init() failed - missing elements',data:{hasMessagesContainer:!!this.messagesContainer,hasMessageInput:!!this.messageInput,hasSendButton:!!this.sendButton},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                    // #endregion
                     return;
                 }
 
@@ -402,13 +423,22 @@ export default function handler(req, res) {
                 
                 if (this.closeButton) {
                     this.closeButton.addEventListener('click', () => {
+                        // #region agent log
+                        fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:403',message:'close button clicked',data:{hasParent:!!window.parent,isIframe:window.parent !== window,parentOrigin:window.parent !== window ? window.location.origin : 'same'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                        // #endregion
                         if (window.parent && window.parent !== window) {
                             window.parent.postMessage({ type: 'closeChatbot' }, '*');
+                            // #region agent log
+                            fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:407',message:'postMessage sent to parent',data:{type:'closeChatbot'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                            // #endregion
                         }
                     });
                 }
                 
                 this.messageInput.addEventListener('keypress', (e) => {
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:411',message:'input keypress',data:{key:e.key,shiftKey:e.shiftKey},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+                    // #endregion
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         this.sendMessage();
@@ -436,6 +466,10 @@ export default function handler(req, res) {
 
             async sendMessage() {
                 const message = this.messageInput.value.trim();
+                // #region agent log
+                console.log('[Embed Debug] sendMessage called', {messageLength:message.length,isLoading:this.isLoading,windowLocation:window.location.href,relativeApiUrl:'/api/chat'});
+                fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:437',message:'sendMessage called',data:{messageLength:message.length,isLoading:this.isLoading,windowLocation:window.location.href,relativeApiUrl:'/api/chat'},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch((e)=>console.error('[Embed Debug] Log fetch failed',e));
+                // #endregion
                 
                 if (!message || this.isLoading) {
                     return;
@@ -447,21 +481,39 @@ export default function handler(req, res) {
                 this.setLoading(true);
 
                 try {
-                    const response = await fetch('/api/chat', {
+                    // #region agent log
+                    const apiUrl = '/api/chat';
+                    const resolvedUrl = new URL(apiUrl, window.location.href).href;
+                    console.log('[Embed Debug] API fetch starting', {relativeUrl:apiUrl,resolvedUrl,windowOrigin:window.location.origin,isIframe:window.self !== window.top});
+                    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:450',message:'API fetch starting',data:{relativeUrl:apiUrl,resolvedUrl,windowOrigin:window.location.origin,isIframe:window.self !== window.top},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch((e)=>console.error('[Embed Debug] Log fetch failed',e));
+                    // #endregion
+                    // Use absolute URL to ensure it works correctly when embedded
+                    const apiEndpoint = new URL('/api/chat', window.location.origin).href;
+                    console.log('[Embed Debug] API endpoint resolved', {apiEndpoint});
+                    const response = await fetch(apiEndpoint, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({ message }),
                     });
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:459',message:'API response received',data:{ok:response.ok,status:response.status,statusText:response.statusText,responseUrl:response.url},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                    // #endregion
                     
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
 
                     const data = await response.json();
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:467',message:'API response parsed',data:{hasResponse:!!data.response,responseLength:data.response?.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                    // #endregion
                     this.addMessage(data.response || 'No response received', 'bot');
                 } catch (error) {
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'embed.js:470',message:'API fetch error',data:{errorMessage:error.message,errorName:error.name,errorStack:error.stack?.substring(0,200)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                    // #endregion
                     this.addMessage('Sorry, there was an error processing your message.', 'bot');
                 } finally {
                     this.setLoading(false);

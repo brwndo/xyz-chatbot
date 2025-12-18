@@ -17,17 +17,26 @@ export default function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Determine the base URL from the request
+  const protocol = req.headers['x-forwarded-proto'] || (req.headers.host?.includes('localhost') ? 'http' : 'https');
+  const host = req.headers.host || req.headers['x-forwarded-host'] || 'xyz-chatbot.vercel.app';
+  const baseUrl = `${protocol}://${host}`;
+  
   // Widget script content
   const widgetScript = `
 (function() {
   'use strict';
   
-  // Configuration
-  const CHATBOT_URL = 'https://xyz-chatbot.vercel.app';
+  // Configuration - dynamically set from server
+  const CHATBOT_URL = '${baseUrl}';
   
   // Widget class
   class ChatbotWidget {
     constructor(options = {}) {
+      // #region agent log
+      console.log('[Widget Debug] ChatbotWidget constructor called', {options});
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:30',message:'ChatbotWidget constructor called',data:{options},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'A'})}).catch((e)=>console.error('[Widget Debug] Log fetch failed',e));
+      // #endregion
       this.options = {
         position: options.position || 'bottom-right',
         width: options.width || '350px',
@@ -41,6 +50,10 @@ export default function handler(req, res) {
     }
     
     init() {
+      // #region agent log
+      console.log('[Widget Debug] init() called', {documentReadyState:document.readyState,bodyExists:!!document.body});
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:43',message:'init() called',data:{documentReadyState:document.readyState,bodyExists:!!document.body},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'A'})}).catch((e)=>console.error('[Widget Debug] Log fetch failed',e));
+      // #endregion
       this.createStyles();
       this.createButton();
       this.createIframe();
@@ -49,6 +62,9 @@ export default function handler(req, res) {
     
     setupMessageListener() {
       window.addEventListener('message', (event) => {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:51',message:'postMessage received',data:{type:event.data?.type,origin:event.origin,isOpen:this.isOpen},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
         if (event.data && event.data.type === 'closeChatbot') {
           if (this.isOpen) {
             this.close();
@@ -150,8 +166,20 @@ export default function handler(req, res) {
       this.button.className = 'chatbot-widget-button';
       this.button.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.89349 20.2942 0.89349 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM20 11C20.6986 11 21.3694 10.8806 21.9929 10.6611C21.9976 10.7735 22 10.8865 22 11C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3H14C14.1135 3 14.2265 3.00237 14.3389 3.00705C14.1194 3.63061 14 4.30136 14 5C14 8.31371 16.6863 11 20 11Z" fill="currentColor"/></svg>';
       this.button.setAttribute('aria-label', 'Open chat');
-      
+      this.button.setAttribute('tabindex', '0');
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:148',message:'button created',data:{hasAriaLabel:this.button.hasAttribute('aria-label'),tabindex:this.button.getAttribute('tabindex')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
       this.button.addEventListener('click', () => this.toggle());
+      this.button.addEventListener('keydown', (e) => {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:156',message:'button keydown',data:{key:e.key,code:e.code},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+        // #endregion
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.toggle();
+        }
+      });
       
       document.body.appendChild(this.button);
     }
@@ -159,9 +187,24 @@ export default function handler(req, res) {
     createIframe() {
       this.iframe = document.createElement('iframe');
       this.iframe.className = 'chatbot-widget-iframe';
-      this.iframe.src = \`\${CHATBOT_URL}/embed.html\`;
+      this.iframe.src = CHATBOT_URL + '/embed.html';
       this.iframe.setAttribute('title', 'Portfolio Chatbot');
-      
+      this.iframe.setAttribute('aria-hidden', 'true');
+      this.iframe.setAttribute('allow', 'microphone; camera');
+      // #region agent log
+      console.log('[Widget Debug] iframe created', {src:this.iframe.src,chatbotUrl:CHATBOT_URL});
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:159',message:'iframe created',data:{src:this.iframe.src,chatbotUrl:CHATBOT_URL},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'B'})}).catch((e)=>console.error('[Widget Debug] Log fetch failed',e));
+      // #endregion
+      this.iframe.addEventListener('load', () => {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:166',message:'iframe loaded',data:{src:this.iframe.src},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
+      });
+      this.iframe.addEventListener('error', (e) => {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:170',message:'iframe load error',data:{src:this.iframe.src,error:e.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
+      });
       document.body.appendChild(this.iframe);
     }
     
@@ -177,26 +220,60 @@ export default function handler(req, res) {
     
     open() {
       this.iframe.classList.add('open');
+      this.iframe.setAttribute('aria-hidden', 'false');
       const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:178',message:'widget opening',data:{isMobile,windowWidth:window.innerWidth,buttonDisplay:isMobile?'none':'visible'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
       if (isMobile) {
         this.button.style.display = 'none';
+        this.button.setAttribute('aria-hidden', 'true');
       } else {
         this.button.innerHTML = '✕';
         this.button.setAttribute('aria-label', 'Close chat');
       }
+      // Focus management: try to focus the iframe, then the input inside
+      setTimeout(() => {
+        try {
+          this.iframe.focus();
+          // Try to focus input inside iframe (may fail due to cross-origin restrictions)
+          const iframeDoc = this.iframe.contentDocument || this.iframe.contentWindow?.document;
+          if (iframeDoc) {
+            const input = iframeDoc.getElementById('messageInput');
+            if (input) {
+              input.focus();
+            }
+          }
+        } catch (e) {
+          // Cross-origin restrictions may prevent accessing iframe content
+        }
+      }, 100);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:187',message:'open() complete',data:{isOpen:this.isOpen,buttonVisible:this.button.style.display !== 'none'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
     }
     
     close() {
       this.iframe.classList.remove('open');
+      this.iframe.setAttribute('aria-hidden', 'true');
       this.button.style.display = 'flex';
+      this.button.setAttribute('aria-hidden', 'false');
       this.button.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.89349 20.2942 0.89349 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM20 11C20.6986 11 21.3694 10.8806 21.9929 10.6611C21.9976 10.7735 22 10.8865 22 11C22 15.4183 18.4183 19 14 19V22.5C9 20.5 2 17.5 2 11C2 6.58172 5.58172 3 10 3H14C14.1135 3 14.2265 3.00237 14.3389 3.00705C14.1194 3.63061 14 4.30136 14 5C14 8.31371 16.6863 11 20 11Z" fill="currentColor"/></svg>';
       this.button.setAttribute('aria-label', 'Open chat');
+      // Return focus to button for accessibility
+      this.button.focus();
     }
   }
   
   // Auto-initialize if data attributes are present
-  document.addEventListener('DOMContentLoaded', function() {
+  function tryAutoInit() {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:198',message:'tryAutoInit called',data:{documentReadyState:document.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     const scriptTag = document.querySelector('script[src*="api/widget"]');
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:201',message:'script tag lookup',data:{found:!!scriptTag,hasAutoInit:scriptTag?.hasAttribute('data-auto-init')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     if (scriptTag && scriptTag.hasAttribute('data-auto-init')) {
       const options = {};
       
@@ -207,10 +284,25 @@ export default function handler(req, res) {
       if (scriptTag.hasAttribute('data-button-color')) {
         options.buttonColor = scriptTag.getAttribute('data-button-color');
       }
-      
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:211',message:'auto-init creating widget',data:{options},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
       new ChatbotWidget(options);
     }
-  });
+  }
+  
+  document.addEventListener('DOMContentLoaded', tryAutoInit);
+  // Also try immediately if DOM is already loaded
+  if (document.readyState === 'loading') {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:217',message:'DOM still loading, waiting for DOMContentLoaded',data:{readyState:document.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+  } else {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/17206899-c42a-4742-bebe-2970e82d7d3a',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'widget.js:220',message:'DOM already loaded, trying auto-init immediately',data:{readyState:document.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+    tryAutoInit();
+  }
   
   // Expose to global scope
   window.ChatbotWidget = ChatbotWidget;
@@ -219,3 +311,4 @@ export default function handler(req, res) {
 
   res.status(200).send(widgetScript);
 }
+
