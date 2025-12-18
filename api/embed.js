@@ -101,6 +101,21 @@ export default function handler(req, res) {
         }
         
         @media (max-width: 768px) {
+            body {
+                height: 100dvh;
+                height: 100vh; /* Fallback for older browsers */
+            }
+            
+            .app {
+                height: 100dvh;
+                height: 100vh; /* Fallback for older browsers */
+            }
+            
+            .chat-container {
+                height: 100dvh;
+                height: 100vh; /* Fallback for older browsers */
+            }
+            
             .close-button {
                 display: block;
             }

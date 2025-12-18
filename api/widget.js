@@ -97,6 +97,7 @@ export default function handler(req, res) {
           z-index: 9999;
           transform: scale(0.8) translateY(20px);
           opacity: 0;
+          visibility: hidden;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           pointer-events: none;
         }
@@ -104,23 +105,27 @@ export default function handler(req, res) {
         .chatbot-widget-iframe.open {
           transform: scale(1) translateY(-100px);
           opacity: 1;
+          visibility: visible;
           pointer-events: auto;
         }
         
         @media (max-width: 768px) {
           .chatbot-widget-iframe {
             width: 100vw !important;
-            height: 100vh !important;
+            height: 100dvh !important;
+            height: 100vh !important; /* Fallback for older browsers */
             top: 0 !important;
             left: 0 !important;
             right: auto !important;
             bottom: auto !important;
             border-radius: 0 !important;
             transform: scale(0.8) translateY(20px) !important;
+            visibility: hidden !important;
           }
           
           .chatbot-widget-iframe.open {
             transform: scale(1) translateY(0) !important;
+            visibility: visible !important;
           }
         }
       \`;
